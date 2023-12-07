@@ -1,6 +1,7 @@
 package com.example.simplelistagainpractice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements  lIstFragment.onI
 
     TextView tvDetail;
     ArrayList<String> phones;
+    FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +34,36 @@ public class MainActivity extends AppCompatActivity implements  lIstFragment.onI
         }
 
 
+        if(findViewById(R.id.layout_portrait)!=null)
+        {
+             fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().show(fragmentManager.findFragmentById(R.id.lIstFragment))
+                    .hide(fragmentManager.findFragmentById(R.id.DetailFragment)).commit();
+        }
+
+        if(findViewById(R.id.layout_land)!=null)
+        {
+             fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().show(fragmentManager.findFragmentById(R.id.lIstFragment))
+                    .show(fragmentManager.findFragmentById(R.id.DetailFragment)).commit();
+        }
+
 
     }
 
     @Override
     public void itemClicked(int position) {
         tvDetail.setText(phones.get(position));
+        if (findViewById(R.id.layout_portrait) != null) {
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .hide(fragmentManager.findFragmentById(R.id.lIstFragment))
+                    .show(fragmentManager.findFragmentById(R.id.DetailFragment))
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
+
 
 
     void init()
